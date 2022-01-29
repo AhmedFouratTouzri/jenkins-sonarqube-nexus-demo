@@ -16,11 +16,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 
+
 public class Departement implements Serializable {
 
 	private static final long serialVersionUID = -357738161698377833L;
 
 	@Id
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
@@ -30,6 +32,7 @@ public class Departement implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Employe> employes;
 
+
 	@ManyToOne
 	private Entreprise entreprise;
 
@@ -37,9 +40,11 @@ public class Departement implements Serializable {
 		super();
 	}
 
+
 	public Departement(String name) {
 		this.name = name;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -80,3 +85,4 @@ public class Departement implements Serializable {
 	}
 
 }
+
