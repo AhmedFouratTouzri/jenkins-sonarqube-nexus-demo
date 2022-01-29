@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tn.esprit.spring</groupId>
-	<artifactId>timesheet-devops</artifactId>
+	<artifactId>Timesheet-devops</artifactId>
 	<version>1.0</version>
 	<name>timesheet-devops</name>
 	<description>timesheet-devops</description>
