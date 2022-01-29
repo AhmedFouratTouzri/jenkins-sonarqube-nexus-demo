@@ -1,1 +1,0 @@
-# jenkins-sonarqube-nexus-demo
