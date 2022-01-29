@@ -43,6 +43,17 @@ public class Contrat implements Serializable {
 		this.salaire = salaire;
 	}
 
+	
+	
+
+	public Contrat(Long reference, Date dateDebut, String typeContrat, float salaire) {
+		super();
+		this.reference = reference;
+		this.dateDebut = dateDebut;
+		this.typeContrat = typeContrat;
+		this.salaire = salaire;
+	}
+
 
 	public Date getDateDebut() {
 		return dateDebut;

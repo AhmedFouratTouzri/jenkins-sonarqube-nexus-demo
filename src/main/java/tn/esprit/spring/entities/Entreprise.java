@@ -12,13 +12,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+
 @Entity
+
 public class Entreprise implements Serializable{
 	
 	private static final long serialVersionUID = 3152690779535828408L;
 
-	@Id
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Long id;
 	
 	private String name;
@@ -29,6 +32,7 @@ public class Entreprise implements Serializable{
 			cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, 
 			fetch=FetchType.EAGER)
 	private List<Departement> departements = new ArrayList<>();
+
 
 	public Entreprise() { }
 	public Entreprise(Long id, String name, String raisonSocial, List<Departement> departements) {
@@ -58,6 +62,7 @@ public class Entreprise implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -83,9 +88,6 @@ public class Entreprise implements Serializable{
 		this.departements = departements;
 	}
 
-	
 
-	
-	
 	
 }

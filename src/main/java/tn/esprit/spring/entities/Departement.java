@@ -14,33 +14,38 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
+
+
 public class Departement implements Serializable {
 
 	private static final long serialVersionUID = -357738161698377833L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String name;
-	
+
 	@JsonIgnore
-	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Employe> employes;
-	 
+
+
 	@ManyToOne
 	private Entreprise entreprise;
 
 	public Departement() {
 		super();
 	}
-	
+
+
 	public Departement(String name) {
 		this.name = name;
 	}
-	 
+
+
 	public Long getId() {
 		return id;
 	}
@@ -72,6 +77,12 @@ public class Departement implements Serializable {
 	public void setEntreprise(Entreprise entreprise) {
 		this.entreprise = entreprise;
 	}
-	 
+
+	public Departement(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
 }
- 
+

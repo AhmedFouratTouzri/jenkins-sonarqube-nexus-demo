@@ -1,18 +1,19 @@
 package tn.esprit.spring;
 
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
+
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import tn.esprit.spring.entities.Role;
-import tn.esprit.spring.entities.User;
+
 import tn.esprit.spring.services.UserServiceImpl;
 
 @SpringBootApplication
+@EnableAutoConfiguration
+
 public class TimesheetDevops1Application {
 
 	public static void main(String[] args) {
