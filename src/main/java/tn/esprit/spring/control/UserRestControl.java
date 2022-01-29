@@ -44,7 +44,9 @@ public class UserRestControl {
 	}
 
 
+
 	// Ajouter User : http://localhost:6868/timesheet-devops/add-user 
+
 
 	@PostMapping("/add-user")
 	public User addUser(@RequestBody User u) {
@@ -64,7 +66,9 @@ public class UserRestControl {
 
 	// Modifier User 
 
+
 	// http://localhost:6868/timesheet-devops/modify-user 
+
 
 	@PutMapping("/modify-user") 
 	public User updateUser(@RequestBody User user) {

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
 
 
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -10,14 +12,16 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 
-		<version>2.5.7</version>
+
+		<version>2.6.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tn.esprit.spring</groupId>
-	<artifactId>timesheet-devops</artifactId>
+	<artifactId>Timesheet-devops</artifactId>
 	<version>1.0</version>
-	<name>timesheet-devops</name>
-	<description>timesheet-devops</description>
+	<name>Timesheet-devops-1</name>
+	<description>Timesheet-devops</description>
+
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -76,6 +80,8 @@
 	</build>
 
 
+
 </project>
+
 
 

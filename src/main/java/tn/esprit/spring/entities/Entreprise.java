@@ -20,7 +20,8 @@ public class Entreprise implements Serializable{
 	private static final long serialVersionUID = 3152690779535828408L;
 
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 
 	private Long id;
 	
@@ -34,7 +35,10 @@ public class Entreprise implements Serializable{
 	private List<Departement> departements = new ArrayList<>();
 
 
-	public Entreprise() { }
+
+	public Entreprise() { 
+       super();
+  }
 	public Entreprise(Long id, String name, String raisonSocial, List<Departement> departements) {
 		super();
 		this.id = id;
@@ -62,6 +66,7 @@ public class Entreprise implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 
 	public String getName() {
 		return name;
