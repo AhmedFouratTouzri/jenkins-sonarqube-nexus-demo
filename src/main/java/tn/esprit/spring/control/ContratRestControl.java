@@ -30,20 +30,18 @@ public class ContratRestControl {
 	public Contrat retrieveContract(@PathVariable("contract-id") String contractId) {
 		return contractService.retrieveContract(contractId);
 	}
-	// Ajouter departement : http://localhost:6868/timesheet-devops/add-dep 
+	// http://localhost:6868/timesheet-devops/add-contract
 	@PostMapping("/add-contract")
 	public Contrat addContract(@RequestBody Contrat c) {
 		Contrat contract = contractService.addContract(c); 
 		return contract;
 	}
-	// Supprimer Departement : 
 	// http://localhost:6868/timesheet-devops/remove-contract/{contract-id}
 	@DeleteMapping("/remove-contract/{contract-id}") 
 	public void removeContract(@PathVariable("contract-id") String contractId) { 
 		contractService.deleteContract(contractId);
 	} 
-	// Modifier Departement 
-	// http://localhost:6868/timesheet-devops/modify-dep 
+	// http://localhost:6868/timesheet-devops/modify-contract
 	@PutMapping("/modify-contract") 
 	public Contrat updateContract(@RequestBody Contrat c) {
 		return contractService.updateContract(c);

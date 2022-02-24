@@ -10,6 +10,14 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Project metadata & shananigans
+.classpath
+.project
+.settings/
+
+# target directory
+target/
+
 # Package Files #
 *.jar
 *.war
