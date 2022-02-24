@@ -42,6 +42,7 @@ public class Contrat implements Serializable {
 		this.typeContrat = typeContrat;
 		this.salaire = salaire;
 	}
+
 	
 	
 
@@ -52,6 +53,7 @@ public class Contrat implements Serializable {
 		this.typeContrat = typeContrat;
 		this.salaire = salaire;
 	}
+
 
 	public Date getDateDebut() {
 		return dateDebut;
