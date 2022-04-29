@@ -3,7 +3,7 @@ name: Maven package and publish & cache dependencies
 on:
   push:
     branches:
-      - ${{ env.GITHUB_REF_NAME }}
+      - master
 
 jobs:
   build:
