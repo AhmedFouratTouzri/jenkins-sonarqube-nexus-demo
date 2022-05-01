@@ -24,7 +24,7 @@ jobs:
           distribution: "zulu"
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml -DskipTests
 
       # cache project dependencies for faster subsequent runs
       - uses: skjolber/maven-cache-github-action@v1.1
