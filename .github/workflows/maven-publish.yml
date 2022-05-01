@@ -2,8 +2,10 @@ name: Maven package and publish & cache dependencies
 
 on:
   push:
-    branches:
-      - master
+    branches: [ main ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main ]
 
 jobs:
   build:
