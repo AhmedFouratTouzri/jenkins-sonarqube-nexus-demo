@@ -11,10 +11,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tn.esprit.spring</groupId>
-	<artifactId>Timesheet-devops</artifactId>
+	<artifactId>pfe-gitops-demo</artifactId>
 	<version>1.0</version>
-	<name>Timesheet-devops-1</name>
-	<description>Timesheet-devops</description>
+	<name>pfe-gitops-demo</name>
+	<description>PFE GitOps demo app</description>
 
 
 	<properties>
@@ -73,9 +73,13 @@
 		</plugins>
 	</build>
 
+	<distributionManagement>
+		<repository>
+		  <id>github</id>
+		  <name>GitHub Packages</name>
+		  <url>https://maven.pkg.github.com/AhmedFouratTouzri/pfe-gitops-demo</url>
+		</repository>
+	  </distributionManagement>
 
 
 </project>
-
-
-
