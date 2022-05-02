@@ -70,17 +70,12 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 	<distributionManagement>
 		<repository>
-			<name>pfe-gitops</name>
-			<url>https://maven.pkg.github.com/AhmedFouratTouzri</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
+		  <id>github</id>
+		  <name>GitHub Packages</name>
+		  <url>https://maven.pkg.github.com/tn/esprit/spring/pfe-gitops-demo</url>
 		</repository>
-		
-	</distributionManagement>
+	  </distributionManagement>
 </project>
