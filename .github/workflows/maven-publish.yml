@@ -39,6 +39,6 @@ jobs:
 
       - name: Deploy to GitHub Packages
         run: |
-          mvn --batch-mode deploy -Dregistry=https://maven.pkg.github.com/AhmedFouratTouzri -Dtoken={{ secrets.DEPLOY_GITHUB_TOKEN }} -DskipTests
+          mvn --batch-mode deploy -Dregistry=https://maven.pkg.github.com/AhmedFouratTouzri -Dtoken=${{ secrets.DEPLOY_GITHUB_TOKEN }} -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
