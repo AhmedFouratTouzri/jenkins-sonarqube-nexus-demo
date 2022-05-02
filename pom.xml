@@ -84,7 +84,7 @@
 		  </activation>
 		  <distributionManagement>
 			<repository>
-			  <id>tn.esprit.spring</id>
+			  <id>github</id>
 			  <name>GitHub Packages</name>
 			  <url>https://maven.pkg.github.com/AhmedFouratTouzri/pfe-gitops-demo</url>
 			</repository>
