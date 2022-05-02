@@ -39,6 +39,6 @@ jobs:
 
       - name: Deploy to GitHub Packages
         run: |
-          mvn --batch-mode deploy -DuseGitHubPackages=true -DskipTests
+          mvn --batch-mode --settings {{ GITHUB_WORKSPACE }} deploy -DuseGitHubPackages=true -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
