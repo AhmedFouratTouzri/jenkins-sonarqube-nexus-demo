@@ -1,1 +1,1 @@
-# jenkins-sonarqube-nexus-demo
+# pfe-gitops-demo
