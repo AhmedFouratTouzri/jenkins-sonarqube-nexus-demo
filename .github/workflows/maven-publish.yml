@@ -50,9 +50,11 @@ jobs:
       contents: read
       packages: write
     needs: ci
-    name: "Continous Integration"
+    name: "Push container image to ACR (Azure Container Registry)"
 
     steps:
+      - uses: actions/checkout@v3
+      
       - uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.AZURE_ACR }}
