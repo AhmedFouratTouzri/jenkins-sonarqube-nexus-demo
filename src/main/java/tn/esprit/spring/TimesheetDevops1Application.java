@@ -1,22 +1,10 @@
 package tn.esprit.spring;
 
-
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
-
-
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-
-import tn.esprit.spring.entities.Role;
-import tn.esprit.spring.entities.User;
 
 
 import tn.esprit.spring.services.UserServiceImpl;
@@ -30,7 +18,7 @@ public class TimesheetDevops1Application {
 		SpringApplication.run(TimesheetDevops1Application.class, args);
 	}
 	UserServiceImpl us=null;
-	String string = "2015-03-20";
+	String string = "2022-04-04";
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	LocalDate date = LocalDate.parse(string, formatter);
 
