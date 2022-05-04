@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  github-actions-ci:
+  ci:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -42,3 +42,22 @@ jobs:
           mvn --batch-mode deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
+
+  docker:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: write
+    needs: ci
+    name: "Continous Integration"
+
+    steps:
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.AZURE_ACR }}
+          username: ${{ secrets.AZURE_ACR_USERNAME }}
+          password: ${{ secrets.AZURE_ACR_PASSWORD }}
+      - run: |
+          docker build . -t ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ github.sha }}
+          docker push ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ github.sha }}
