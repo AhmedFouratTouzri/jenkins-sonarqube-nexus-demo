@@ -43,19 +43,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
 
-  docker:
-    runs-on: ubuntu-latest
-    
-    permissions:
-      contents: read
-      packages: write
-    needs: ci
-    name: "Push container image to ACR (Azure Container Registry)"
-
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: azure/docker-login@v1
+      - name: "Push container image to ACR (Azure Container Registry)"
+        uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.AZURE_ACR }}
           username: ${{ secrets.AZURE_ACR_USERNAME }}
