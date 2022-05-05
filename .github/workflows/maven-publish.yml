@@ -1,4 +1,4 @@
-name: Maven package and publish & cache dependencies
+name: "Continous Integration"
 
 on:
   push:
@@ -11,8 +11,15 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       contents: read
       packages: write
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+  
     name: "Continous Integration"
 
     steps:
@@ -32,10 +39,19 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
 
       - name: Build and force snapshot updates with Maven
         run: |
           mvn -B package --file pom.xml -DskipTests
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
 
       - name: Deploy to GitHub Packages
         run: |
