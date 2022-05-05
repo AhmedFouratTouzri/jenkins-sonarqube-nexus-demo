@@ -51,5 +51,5 @@ jobs:
           password: ${{ secrets.AZURE_ACR_PASSWORD }}
       - run: |
           docker build . -t ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ github.sha }}
-          docker tag ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ github.sha }} ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:latest
-          docker push --all-tags ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ github.sha }}
+          docker image tag ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ github.sha }} ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:latest
+          docker push --all-tags ${{ secrets.AZURE_ACR }}/pfe-gitops-demo

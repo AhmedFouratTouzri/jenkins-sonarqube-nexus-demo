@@ -11,7 +11,7 @@
 
 	<groupId>tn.esprit.spring</groupId>
 	<artifactId>pfe-gitops-demo</artifactId>
-	<version>1.8</version>
+	<version>1.9</version>
 	<description>PFE GitOps demo app</description>
 
 	<properties>
@@ -51,8 +51,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency
-		>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
