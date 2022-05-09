@@ -26,7 +26,7 @@ spec:
       containers:
       - name: pfe-gitops-demo-app
         image: pfegitops.azurecr.io/pfe-gitops-demo:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
           protocol: TCP
