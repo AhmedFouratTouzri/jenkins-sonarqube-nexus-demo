@@ -40,7 +40,7 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
-          runAsNonRoot: true
+          #runAsNonRoot: true
           #runAsUser: 1000
         livenessProbe:
           httpGet:
