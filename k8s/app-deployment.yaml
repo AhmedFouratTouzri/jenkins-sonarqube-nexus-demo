@@ -26,8 +26,6 @@ spec:
       containers:
       - name: pfe-gitops-demo-app
         image: pfegitops.azurecr.io/pfe-gitops-demo:latest
-        imagePullSecrets:
-          - name:  acr-pull-secret
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -52,5 +50,7 @@ spec:
           httpGet:
             path: /actuator/health/readiness
             port: 8080
+      imagePullSecrets:
+          - name:  acr-pull-secret
         
 
