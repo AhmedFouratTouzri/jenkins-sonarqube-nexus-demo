@@ -37,11 +37,6 @@ spec:
                secretKeyRef: 
                 name: pfe-gitops-db-secret
                 key: MYSQL_DB
-            - name: MYSQL_USER
-              valueFrom: 
-               secretKeyRef: 
-                name: pfe-gitops-db-secret
-                key: MYSQL_USER
           #volumeMounts:
           #  - name: data
           #    mountPath: /var/lib/mysql
