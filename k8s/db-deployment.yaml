@@ -22,6 +22,8 @@ spec:
       containers:
         - name: pfe-gitops-db
           image: mysql:5.7
+          args:
+            - "--ignore-db-dir=lost+found"
           ports:
             - name: tcp
               protocol: TCP
