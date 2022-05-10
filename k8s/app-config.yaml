@@ -39,7 +39,7 @@ data:
         hibernate:
           ddl-auto: update
       datasource:
-        password: ''
+        password: ${MYSQL_ROOT_PASSWORD}
         driver-class-name: com.mysql.jdbc.Driver
         username: root
         url: jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DB}?${MYSQL_ARGS}
