@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pfe-gitops-db
+  labels:
+    app: pfe-gitops-db
+    env: dev
+spec:
+  replicas: 1
+  serviceName: pfe-gitops-db-svc
+  selector:
+    matchLabels:
+      app: pfe-gitops-db
+  template:
+    metadata:
+      labels:
+        app: pfe-gitops-db
+        env: dev
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: pfe-gitops-db
+          image: mysql:5.7
+          ports:
+            - name: tcp
+              protocol: TCP
+              containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom: 
+               secretKeyRef: 
+                key: ROOT_PASSWORD
+                name: pfe-gitops-db-secret
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: pfe-gitops-db-data
+      spec:
+        storageClassName: managed
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
