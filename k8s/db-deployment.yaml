@@ -37,14 +37,28 @@ spec:
                secretKeyRef: 
                 name: pfe-gitops-db-secret
                 key: MYSQL_DB
-          #volumeMounts:
-          #  - name: data
-          #    mountPath: /var/lib/mysql
-  #volumeClaimTemplates:
+          volumeMounts:
+            - name: pfe-gitops-db-data
+              mountPath: /var/lib/mysql
+            - name: mysql-initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb-config
+        - name: pfe-gitops-db-data
+          persistentVolumeClaim:
+            claimName: pfe-gitops-db-data
+
+  # volumeClaimTemplates:
   #  - metadata:
   #      name: pfe-gitops-db-data
+  #      namespace: gitops
+  #      labels:
+  #        app: pfe-gitops-demo
+  #        env: dev
   #    spec:
-  #      storageClassName: managed
+  #      storageClassName: default
   #      accessModes:
   #        - ReadWriteOnce
   #      resources:
