@@ -22,6 +22,22 @@ spec:
       - name: pfe-gitops-demo-app
         image: pfegitops.azurecr.io/pfe-gitops-demo:1.14
         imagePullPolicy: Always
+        env:
+          - name: MYSQL_HOST
+            valueFrom:
+              secretKeyRef:
+                name: pfe-gitops-app-secret
+                key: MYSQL_HOST
+          - name: MYSQL_DB
+            valueFrom:
+              secretKeyRef:
+                name: pfe-gitops-app-secret
+                key: MYSQL_DB
+          - name: MYSQL_ARGS
+            valueFrom:
+              secretKeyRef:
+                name: pfe-gitops-app-secret
+                key: MYSQL_ARGS
         volumeMounts:
           - name:  app-config-volume
             mountPath:  /config/application.yaml

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: pfe-gitops-db
+  namespace: gitops
   labels:
     app: pfe-gitops-db
     env: dev
@@ -29,18 +30,28 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom: 
                secretKeyRef: 
-                key: ROOT_PASSWORD
                 name: pfe-gitops-db-secret
-          volumeMounts:
-            - name: data
-              mountPath: /var/lib/mysql
-  volumeClaimTemplates:
-    - metadata:
-        name: pfe-gitops-db-data
-      spec:
-        storageClassName: managed
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 1Gi
+                key: ROOT_PASSWORD
+            - name: MYSQL_DB
+              valueFrom: 
+               secretKeyRef: 
+                name: pfe-gitops-db-secret
+                key: MYSQL_DB
+            - name: MYSQL_USER
+              valueFrom: 
+               secretKeyRef: 
+                name: pfe-gitops-db-secret
+                key: MYSQL_USER
+          #volumeMounts:
+          #  - name: data
+          #    mountPath: /var/lib/mysql
+  #volumeClaimTemplates:
+  #  - metadata:
+  #      name: pfe-gitops-db-data
+  #    spec:
+  #      storageClassName: managed
+  #      accessModes:
+  #        - ReadWriteOnce
+  #      resources:
+  #        requests:
+  #          storage: 1Gi
