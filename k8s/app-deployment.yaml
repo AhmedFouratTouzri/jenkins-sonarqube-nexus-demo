@@ -63,11 +63,16 @@ spec:
             path: /actuator/health/liveness
             port: 8080
             scheme: HTTP
+          initialDelaySeconds: 60
+          failureThreshold: 5
+          periodSeconds: 15
+          timeoutSeconds: 30
         readinessProbe:
           httpGet:
             path: /actuator/health/readiness
             port: 8080
             scheme: HTTP
+          periodSeconds: 15
       imagePullSecrets:
         - name:  acr-pull-secret
       volumes:
