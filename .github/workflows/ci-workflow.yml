@@ -3,9 +3,13 @@ name: "Continous Integration"
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - "k8s/**"
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ main ]
+    paths-ignore:
+      - "k8s/**"
 
 jobs:
   ci:
