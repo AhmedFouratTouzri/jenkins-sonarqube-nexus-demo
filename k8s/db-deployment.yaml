@@ -6,17 +6,21 @@ metadata:
   labels:
     app: pfe-gitops-db
     env: dev
+    type: db
 spec:
   replicas: 1
   serviceName: pfe-gitops-db-svc
   selector:
     matchLabels:
       app: pfe-gitops-db
+      env: dev
+      type: db
   template:
     metadata:
       labels:
         app: pfe-gitops-db
         env: dev
+        type: db
     spec:
       terminationGracePeriodSeconds: 10
       containers:

@@ -6,21 +6,24 @@ metadata:
   labels:
     app: pfe-gitops-demo
     env: dev
+    type: app
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: pfe-gitops-demo
       env: dev
+      type: app
   template:
     metadata:
       labels:
         app: pfe-gitops-demo
         env: dev
+        type: app
     spec:
       containers:
       - name: pfe-gitops-demo-app
-        image: pfegitops.azurecr.io/pfe-gitops-demo:1.16
+        image: pfegitops.azurecr.io/pfe-gitops-demo:1.17
         imagePullPolicy: Always
         env:
           - name: MYSQL_HOST

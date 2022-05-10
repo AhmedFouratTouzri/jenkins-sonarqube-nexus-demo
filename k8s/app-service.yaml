@@ -1,0 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: pfe-gitops-app-lb
+  namespace: gitops
+  labels: 
+    app: pfe-gitops-demo
+    env: dev
+spec:
+  selector:
+    app:  pfe-gitops-demo
+    env: dev
+    type: app
+  type:  LoadBalancer
+  ports:
+  - name:  tcp
+    port:  8080
+    targetPort:  8080
+    protocol: TCP
