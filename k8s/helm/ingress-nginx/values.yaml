@@ -193,7 +193,7 @@ controller:
   #         name: secret-resource
 
   # -- Use a `DaemonSet` or `Deployment`
-  kind: Deployment
+  kind: DaemonSet
 
   # -- Annotations to be added to the controller Deployment or DaemonSet
   ##
@@ -699,7 +699,7 @@ controller:
     prometheusRule:
       enabled: true
       additionalLabels: {}
-      # namespace: ""
+      namespace: ""
       rules:
         # # These are just examples rules, please adapt them to your needs
         - alert: NGINXConfigFailed
@@ -846,13 +846,13 @@ defaultBackend:
 
   minAvailable: 1
 
-  resources: {}
-  # limits:
-  #   cpu: 10m
-  #   memory: 20Mi
-  # requests:
-  #   cpu: 10m
-  #   memory: 20Mi
+  resources:
+    limits:
+      cpu: 50m
+      memory: 64Mi
+    requests:
+      cpu: 10m
+      memory: 20Mi
 
   extraVolumeMounts: []
   ## Additional volumeMounts to the default backend container.
@@ -866,11 +866,11 @@ defaultBackend:
 
   autoscaling:
     annotations: {}
-    enabled: false
+    enabled: true
     minReplicas: 1
-    maxReplicas: 2
-    targetCPUUtilizationPercentage: 50
-    targetMemoryUtilizationPercentage: 50
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
 
   service:
     annotations: {}
@@ -899,7 +899,7 @@ rbac:
 ## If true, create & use Pod Security Policy resources
 ## https://kubernetes.io/docs/concepts/policy/pod-security-policy/
 podSecurityPolicy:
-  enabled: false
+  enabled: true
 
 serviceAccount:
   create: true
