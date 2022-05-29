@@ -55,17 +55,20 @@ spec:
           protocol: TCP
         resources:
           requests:
-            cpu: 100m
-            memory: 150M
+            cpu: "100m"
+            memory: "150Mi"
+            ephemeral-storage: "1Gi"
           limits:
-            cpu: 200m
-            memory: 300M
+            cpu: "200m"
+            memory: "300Mi"
+            ephemeral-storage: "2Gi"
         securityContext:
-          allowPrivilegeEscalation: false
+          runAsUser: 10001
+          runAsGroup: 10001
           privileged: false
           runAsNonRoot: true
-          runAsUser: 1000
-          runAsGroup: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness

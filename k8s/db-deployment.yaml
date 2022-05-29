@@ -26,12 +26,40 @@ spec:
       containers:
         - name: pfe-gitops-db
           image: mysql:5.7
+          imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "-u", "root", "-p$MYSQL_ROOT_PASSWORD", "ping", "&>", "/dev/null", "||", "exit", "1"]           
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command: ["mysql", "-u", "root", "-p$MYSQL_ROOT_PASSWORD", "-e", "SELECT 1"]
+            initialDelaySeconds: 10
+            periodSeconds: 2
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "200m"
+              memory: "512Mi"
+              ephemeral-storage: "2Gi"
           args:
             - "--ignore-db-dir=lost+found"
           ports:
             - name: tcp
               protocol: TCP
               containerPort: 3306
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            privileged: false
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom: 
