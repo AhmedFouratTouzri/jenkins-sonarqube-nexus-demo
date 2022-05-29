@@ -34,7 +34,7 @@ spec:
               - -u
               - root
               - -p
-              - ${MYSQL_ROOT_PASSWORD}
+              - ${{MYSQL_ROOT_PASSWORD}}
               - ping         
             initialDelaySeconds: 30
             periodSeconds: 10
@@ -46,7 +46,7 @@ spec:
               - -u
               - root 
               - -p
-              - ${MYSQL_ROOT_PASSWORD}
+              - ${{MYSQL_ROOT_PASSWORD}}
               - -e 
               - 'SELECT 1'
             initialDelaySeconds: 10
