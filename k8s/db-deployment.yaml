@@ -31,8 +31,10 @@ spec:
             exec:
               command: 
               - mysqladmin
-              - -uroot
-              - -p$MYSQL_ROOT_PASSWORD
+              - -u
+              - root
+              - -p
+              - $MYSQL_ROOT_PASSWORD
               - ping         
             initialDelaySeconds: 30
             periodSeconds: 10
@@ -41,8 +43,10 @@ spec:
             exec:
               command: 
               - mysql 
-              - -uroot 
-              - -p$MYSQL_ROOT_PASSWORD
+              - -u
+              - root 
+              - -p
+              - $MYSQL_ROOT_PASSWORD
               - -e 
               - 'SELECT 1'
             initialDelaySeconds: 10
