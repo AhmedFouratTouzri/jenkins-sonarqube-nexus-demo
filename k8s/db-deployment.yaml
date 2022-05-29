@@ -59,7 +59,6 @@ spec:
             runAsGroup: 10001
             privileged: false
             runAsNonRoot: true
-            readOnlyRootFilesystem: true
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom: 
