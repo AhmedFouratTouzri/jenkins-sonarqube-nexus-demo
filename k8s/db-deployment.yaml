@@ -54,11 +54,6 @@ spec:
             - name: tcp
               protocol: TCP
               containerPort: 3306
-          securityContext:
-            runAsUser: 10001
-            runAsGroup: 10001
-            # privileged: false
-            # runAsNonRoot: true
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom: 
