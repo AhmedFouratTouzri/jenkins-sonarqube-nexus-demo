@@ -62,12 +62,12 @@ spec:
             cpu: "200m"
             memory: "300Mi"
             ephemeral-storage: "2Gi"
-        securityContext:
-          runAsUser: 10001
-          runAsGroup: 10001
-          privileged: false
-          readOnlyRootFilesystem: true
-          allowPrivilegeEscalation: false
+        # securityContext:
+        #   runAsUser: 10001
+        #   runAsGroup: 10001
+        #   privileged: false
+        #   readOnlyRootFilesystem: true
+        #   allowPrivilegeEscalation: false
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness
