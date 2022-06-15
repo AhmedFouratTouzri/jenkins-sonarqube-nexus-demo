@@ -112,7 +112,7 @@ controller:
     # -- Is this ingressClass enabled or not
     enabled: true
     # -- Is this the default ingressClass for the cluster
-    default: false
+    default: true
     # -- Controller-value of the controller that is processing this ingressClass
     controllerValue: "k8s.io/ingress-nginx"
 
@@ -455,6 +455,7 @@ controller:
 
     annotations:
       service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+      service.beta.kubernetes.io/azure-dns-label-name: pfe-gitops-app
     labels: {}
     # clusterIP: ""
 
@@ -680,10 +681,10 @@ controller:
       # nodePort: ""
 
     serviceMonitor:
-      enabled: false
-      additionalLabels: {}
+      enabled: true
+      additionalLabels: 
       ## The label to use to retrieve the job name from.
-      ## jobLabel: "app.kubernetes.io/name"
+        jobLabel: "serviceMonitor"
       namespace: ""
       namespaceSelector: {}
       ## Default: scrape .Release.Namespace only
@@ -758,7 +759,7 @@ revisionHistoryLimit: 10
 ##
 defaultBackend:
   ##
-  enabled: false
+  enabled: true
 
   name: defaultbackend
   image:

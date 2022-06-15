@@ -178,7 +178,7 @@ windows:
 logVerbosity: 0
 
 # logging format JSON
-logFormatJSON: false
+logFormatJSON: true
 
 livenessProbe:
   port: 9808
@@ -194,16 +194,16 @@ rbac:
 
 ## Install RBAC roles and bindings required for K8S Secrets syncing if true
 syncSecret:
-  enabled: false
+  enabled: true
 
 ## Enable secret rotation feature [alpha]
-enableSecretRotation: false
+enableSecretRotation: true
 
 ## Secret rotation poll interval duration
 rotationPollInterval:
 
 ## Provider HealthCheck
-providerHealthCheck: false
+providerHealthCheck: true
 
 ## Provider HealthCheck interval
 providerHealthCheckInterval: 2m
