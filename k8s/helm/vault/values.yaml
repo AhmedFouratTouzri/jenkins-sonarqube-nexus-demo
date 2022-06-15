@@ -352,25 +352,15 @@ server:
     hosts:
       - host: pfe-gitops-app.eastus.cloudapp.azure.com
         paths: 
-          - path: /vault
-            backend:
-              service:
-                name: vault
-                port:
-                  number: 8200
+          - /vault
 
     ## Extra paths to prepend to the host configuration. This is useful when working with annotation based services.
     extraPaths: []
-    # - path: /*
-    #   backend:
-    #     service:
-    #       name: ssl-redirect
-    #       port:
-    #         number: use-annotation
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+
+    tls: 
+      - secretName: tls-secret
+        hosts:
+          - pfe-gitops-app.eastus.cloudapp.azure.com
 
   # OpenShift only - create a route to expose the service
   # By default the created route will be of type passthrough
@@ -866,19 +856,19 @@ csi:
   #   readOnly: true
 
   resources: {}
-  # resources:
-  #   requests:
-  #     cpu: 50m
-  #     memory: 128Mi
-  #   limits:
-  #     cpu: 50m
-  #     memory: 128Mi
+    # resources:
+    #   requests:
+    #     cpu: 50m
+    #     memory: 128Mi
+    #   limits:
+    #     cpu: 50m
+    #     memory: 128Mi
 
   # Settings for the daemonSet used to run the provider.
   daemonSet:
     updateStrategy:
       type: RollingUpdate
-      maxUnavailable: ""
+      maxUnavailable: "1"
     # Extra annotations for the daemonSet. This can either be YAML or a
     # YAML-formatted multi-line templated string map of the annotations to apply
     # to the daemonSet.
