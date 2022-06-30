@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: pfe-gitops-app.eastus.cloudapp.azure.com
+  - host: pfe-gitops-devsecops.eastus.cloudapp.azure.com
     http:
       paths:
       - backend:
@@ -26,5 +26,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - pfe-gitops-app.eastus.cloudapp.azure.com
+    - pfe-gitops-devsecops.eastus.cloudapp.azure.com
     secretName: tls-secret
