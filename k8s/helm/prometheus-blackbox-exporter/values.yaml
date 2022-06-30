@@ -113,7 +113,7 @@ config:
   modules:
     http_2xx:
       prober: http
-      timeout: 5s
+      timeout: 10s
       http:
         valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
         follow_redirects: false
@@ -179,8 +179,6 @@ ingress:
   annotations: 
     cert-manager.io/cluster-issuer: letsencrypt
     kubernetes.io/tls-acme: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
   hosts:
     - host: pfe-gitops-app.eastus.cloudapp.azure.com
@@ -233,7 +231,7 @@ serviceMonitor:
 
   targets:
    - name: pfe--app                    # Human readable URL that will appear in Prometheus / AlertManager
-     url: https://pfe-gitops-app.eastus.cloudapp.azure.com/argocd/login  # The URL that blackbox will scrape
+     url: https://pfe-gitops-app.eastus.cloudapp.azure.com/actuator/health  # The URL that blackbox will scrape
      labels: {}                       # Map of labels for ServiceMonitor. Overrides value set in `defaults`
      interval: 60s                    # Scraping interval. Overrides value set in `defaults`
      scrapeTimeout: 60s               # Scrape timeout. Overrides value set in `defaults`
