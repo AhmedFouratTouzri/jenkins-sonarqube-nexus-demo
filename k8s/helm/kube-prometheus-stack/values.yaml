@@ -669,7 +669,7 @@ grafana:
   ##
   defaultDashboardsTimezone: utc
 
-  adminPassword: prom-operator
+  adminPassword: prom-operator # defaultPassword is changed on first login anyways
 
   rbac:
     ## If true, Grafana PSPs will be created
@@ -2481,7 +2481,22 @@ prometheus:
     ## The scrape configuration example below will find master nodes, provided they have the name .*mst.*, relabel the
     ## port to 2379 and allow etcd scraping provided it is running on all Kubernetes master nodes
     ##
-    additionalScrapeConfigs: []
+    additionalScrapeConfigs:
+      - job_name: blackbox
+        metrics_path: /probe
+        params:
+          module: [http_2xx]
+        static_configs:
+          - targets:
+            - https://pfe-gitops-app.eastus.cloudapp.azure.com
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: prometheus-blackbox-exporter.monitoring:9115
+      
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:
     #     - role: node
