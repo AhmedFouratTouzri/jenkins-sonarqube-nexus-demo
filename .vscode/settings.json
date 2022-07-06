@@ -1,0 +1,6 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "yaml.schemas": {
+        "https://json.schemastore.org/prometheus.json": "file://wsl%24/Ubuntu-20.04/home/touzria/prometheus-config.yml"
+    }
+}

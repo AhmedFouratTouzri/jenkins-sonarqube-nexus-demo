@@ -1,3 +1,15 @@
-# pfe-gitops-demo
+# pfe-gitops-demo helm repo
 
-[![Continous Integration](https://github.com/AhmedFouratTouzri/pfe-gitops-demo/actions/workflows/ci-workflow.yml/badge.svg?branch=main)](https://github.com/AhmedFouratTouzri/pfe-gitops-demo/actions/workflows/ci-workflow.yml)
+This repository hosts [Helm](https://helm.sh) charts.
+
+## Add Helm repository
+
+```bash
+helm repo add pfe-gitops-helm-charts https://ahmedfourattouzri.github.io/pfe-gitops-demo/
+helm repo update
+```
+## Install chart
+
+```bash
+helm upgrade --install app helm-charts/application
+```
