@@ -1,0 +1,202 @@
+apiVersion: v1
+entries:
+  cert-manager:
+  - annotations:
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 1020CF3C033D4F35BAE1C19E1226061C665DF13E
+        url: https://cert-manager.io/public-keys/cert-manager-keyring-2021-09-20-1020CF3C033D4F35BAE1C19E1226061C665DF13E.gpg
+    apiVersion: v1
+    appVersion: v1.8.0
+    created: "2022-07-06T17:24:52.005405277+01:00"
+    description: A Helm chart for cert-manager
+    digest: 7c9c22621001fb6f795c42e5762d1bc8d1b5a51dffaa392947fe38906ccfe7f4
+    home: https://github.com/cert-manager/cert-manager
+    icon: https://raw.githubusercontent.com/jetstack/cert-manager/master/logo/logo.png
+    keywords:
+    - cert-manager
+    - kube-lego
+    - letsencrypt
+    - tls
+    maintainers:
+    - email: cert-manager-maintainers@googlegroups.com
+      name: cert-manager-maintainers
+    name: cert-manager
+    sources:
+    - https://github.com/cert-manager/cert-manager
+    urls:
+    - cert-manager-v1.8.0.tgz
+    version: v1.8.0
+  ingress-nginx:
+  - annotations:
+      artifacthub.io/changes: |
+        - "[8481](https://github.com/kubernetes/ingress-nginx/pull/8481) Fix log creation in chroot script"
+        - "[8479](https://github.com/kubernetes/ingress-nginx/pull/8479) changed nginx base img tag to img built with alpine3.14.6"
+        - "[8478](https://github.com/kubernetes/ingress-nginx/pull/8478) update base images and protobuf gomod"
+        - "[8468](https://github.com/kubernetes/ingress-nginx/pull/8468) Fallback to ngx.var.scheme for redirectScheme with use-forward-headers when X-Forwarded-Proto is empty"
+        - "[8456](https://github.com/kubernetes/ingress-nginx/pull/8456) Implement object deep inspector"
+        - "[8455](https://github.com/kubernetes/ingress-nginx/pull/8455) Update dependencies"
+        - "[8454](https://github.com/kubernetes/ingress-nginx/pull/8454) Update index.md"
+        - "[8447](https://github.com/kubernetes/ingress-nginx/pull/8447) typo fixing"
+        - "[8446](https://github.com/kubernetes/ingress-nginx/pull/8446) Fix suggested annotation-value-word-blocklist"
+        - "[8444](https://github.com/kubernetes/ingress-nginx/pull/8444) replace deprecated topology key in example with current one"
+        - "[8443](https://github.com/kubernetes/ingress-nginx/pull/8443) Add dependency review enforcement"
+        - "[8434](https://github.com/kubernetes/ingress-nginx/pull/8434) added new auth-tls-match-cn annotation"
+        - "[8426](https://github.com/kubernetes/ingress-nginx/pull/8426) Bump github.com/prometheus/common from 0.32.1 to 0.33.0"
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 1.2.0
+    created: "2022-07-06T17:24:52.027170847+01:00"
+    description: Ingress controller for Kubernetes using NGINX as a reverse proxy
+      and load balancer
+    digest: 2c68382918bb7a87ecc4d58944da5c6870096ebf29c85f99d132edbd8dc60737
+    home: https://github.com/kubernetes/ingress-nginx
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/500px-Nginx_logo.svg.png
+    keywords:
+    - ingress
+    - nginx
+    kubeVersion: '>=1.19.0-0'
+    maintainers:
+    - name: rikatz
+    - name: strongjz
+    - name: tao12345666333
+    name: ingress-nginx
+    sources:
+    - https://github.com/kubernetes/ingress-nginx
+    type: application
+    urls:
+    - ingress-nginx-4.1.1.tgz
+    version: 4.1.1
+  kube-prometheus-stack:
+  - annotations:
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/prometheus-community/helm-charts
+        - name: Upstream Project
+          url: https://github.com/prometheus-operator/kube-prometheus
+      artifacthub.io/operator: "true"
+    apiVersion: v2
+    appVersion: 0.56.2
+    created: "2022-07-06T17:24:52.121835683+01:00"
+    dependencies:
+    - condition: kubeStateMetrics.enabled
+      name: kube-state-metrics
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 4.7.*
+    - condition: nodeExporter.enabled
+      name: prometheus-node-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 3.1.*
+    - condition: grafana.enabled
+      name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: 6.29.*
+    description: kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards,
+      and Prometheus rules combined with documentation and scripts to provide easy
+      to operate end-to-end Kubernetes cluster monitoring with Prometheus using the
+      Prometheus Operator.
+    digest: 0c040f84f7de91463c4bbba3737e0bc0f1a76a875246b34f1fbe3bede57310de
+    home: https://github.com/prometheus-operator/kube-prometheus
+    icon: https://raw.githubusercontent.com/prometheus/prometheus.github.io/master/assets/prometheus_logo-cb55bb5c346.png
+    keywords:
+    - operator
+    - prometheus
+    - kube-prometheus
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: andrew@quadcorps.co.uk
+      name: andrewgkew
+    - name: bismarck
+    - email: cedric@desaintmartin.fr
+      name: desaintmartin
+    - email: gianrubio@gmail.com
+      name: gianrubio
+    - email: github.gkarthiks@gmail.com
+      name: gkarthiks
+    - email: kube-prometheus-stack@sisti.pt
+      name: GMartinez-Sisti
+    - email: scott@r6by.com
+      name: scottrigby
+    - email: miroslav.hadzhiev@gmail.com
+      name: Xtigyro
+    name: kube-prometheus-stack
+    sources:
+    - https://github.com/prometheus-community/helm-charts
+    - https://github.com/prometheus-operator/kube-prometheus
+    type: application
+    urls:
+    - kube-prometheus-stack-35.3.1.tgz
+    version: 35.3.1
+  prometheus-blackbox-exporter:
+  - apiVersion: v2
+    appVersion: 0.20.0
+    created: "2022-07-06T17:24:52.132991678+01:00"
+    description: Prometheus Blackbox Exporter
+    digest: 7bf4194b5ee400fdb69c15de63407293e8af60a35669c7b4f54762d86cba0b11
+    home: https://github.com/prometheus/blackbox_exporter
+    keywords:
+    - prometheus
+    - blackbox
+    - monitoring
+    maintainers:
+    - email: cedric@desaintmartin.fr
+      name: desaintmartin
+    - email: gianrubio@gmail.com
+      name: gianrubio
+    - email: me@sota.sh
+      name: rsotnychenko
+    - email: monotek23@gmail.com
+      name: monotek
+    name: prometheus-blackbox-exporter
+    sources:
+    - https://github.com/prometheus/blackbox_exporter
+    - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-blackbox-exporter
+    type: application
+    urls:
+    - prometheus-blackbox-exporter-5.8.2.tgz
+    version: 5.8.2
+  secrets-store-csi-driver:
+  - apiVersion: v2
+    appVersion: 1.1.2
+    created: "2022-07-06T17:24:52.144864807+01:00"
+    description: A Helm chart to install the SecretsStore CSI Driver inside a Kubernetes
+      cluster.
+    digest: e3d2be2681873faaa7d67207124edd694795bffe4995266be41815415fdd3426
+    icon: https://github.com/kubernetes/kubernetes/blob/master/logo/logo.png
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: ritazh@microsoft.com
+      name: Rita Zhang
+    name: secrets-store-csi-driver
+    sources:
+    - https://github.com/kubernetes-sigs/secrets-store-csi-driver
+    urls:
+    - secrets-store-csi-driver-1.1.2.tgz
+    version: 1.1.2
+  vault:
+  - apiVersion: v2
+    appVersion: 1.10.3
+    created: "2022-07-06T17:24:52.165212367+01:00"
+    description: Official HashiCorp Vault Chart
+    digest: 992a83bcd92b8ebf607b9488e06ee735a90da363f4c9a77106708f054fa1e751
+    home: https://www.vaultproject.io
+    icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
+    keywords:
+    - vault
+    - security
+    - encryption
+    - secrets
+    - management
+    - automation
+    - infrastructure
+    kubeVersion: '>= 1.16.0-0'
+    name: vault
+    sources:
+    - https://github.com/hashicorp/vault
+    - https://github.com/hashicorp/vault-helm
+    - https://github.com/hashicorp/vault-k8s
+    - https://github.com/hashicorp/vault-csi-provider
+    urls:
+    - vault-0.20.1.tgz
+    version: 0.20.1
+generated: "2022-07-06T17:24:51.98227924+01:00"
