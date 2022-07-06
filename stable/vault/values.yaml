@@ -287,12 +287,12 @@ server:
   # enterprise image or if you plan to introduce the license key via another
   # route, then leave secretName blank ("") or set it to null.
   # Requires Vault Enterprise 1.8 or later.
-  enterpriseLicense:
+  enterpriseLicense: {}
     # The name of the Kubernetes secret that holds the enterprise license. The
     # secret must be in the same namespace that Vault is installed into.
-    secretName: null
+    # secretName: null
     # The key within the Kubernetes secret that holds the enterprise license.
-    secretKey: "license"
+    # secretKey: "license"
 
   # Resource requests, limits, etc. for the server cluster placement. This
   # should map directly to the value of the resources field for a PodSpec.
@@ -316,7 +316,7 @@ server:
   # Supported log formats include: standard, json
   logFormat: "json"
 
-  resources: 
+  resources: {}
     # resources:
     #   requests:
     #     memory: 256Mi
