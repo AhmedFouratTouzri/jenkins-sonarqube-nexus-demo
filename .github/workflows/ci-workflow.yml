@@ -84,7 +84,13 @@ jobs:
         with:
           image-name: ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ steps.project_version.outputs.PROJECT_VERSION }}
           severity-threshold: CRITICAL
-          run-quality-checks: true 
+          run-quality-checks: true
+          
       - name: Push image
         run: |
           docker push --all-tags ${{ secrets.AZURE_ACR }}/pfe-gitops-demo
+      
+      - name: Update image tag in k8s deployment file
+        run: |
+          sed -i "s/image:.*/image: ${{ secrets.AZURE_ACR }}\/pfe-gitops-demo:${{ steps.project_version.outputs.PROJECT_VERSION }}/g" k8s/deployment.yaml
+        
