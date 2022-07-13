@@ -85,6 +85,7 @@ jobs:
           image-name: ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ steps.project_version.outputs.PROJECT_VERSION }}
           severity-threshold: CRITICAL
           run-quality-checks: true
+        continue-on-error: true
           
       - name: Push image
         run: |
