@@ -56,11 +56,11 @@ spec:
         resources:
           requests:
             cpu: "100m"
-            memory: "150Mi"
+            memory: "128Mi"
             ephemeral-storage: "1Gi"
           limits:
             cpu: "200m"
-            memory: "300Mi"
+            memory: "384Mi"
             ephemeral-storage: "2Gi"
         # securityContext:
         #   runAsUser: 10001
