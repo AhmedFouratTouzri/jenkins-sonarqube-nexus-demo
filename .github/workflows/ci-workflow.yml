@@ -95,14 +95,22 @@ jobs:
           docker push --all-tags ${{ secrets.AZURE_ACR }}/pfe-gitops-demo
       
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
       
       - name: Update image tag in k8s deployment file
         run: |
           sed -i "s|image:.*|image: ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ steps.project_version.outputs.PROJECT_VERSION }}|g" k8s/app-deployment.yaml
-          git config user.name "AhmedFouratTouzri"
-          git config user.email "ahmedfourat.touzri@esprit.tn"
-          git commit -am "[CI] Set app version to ${{ steps.project_version.outputs.PROJECT_VERSION }}"
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
+          
+      - name: Push changes into repo
+        uses: GuillaumeFalourd/git-commit-push@v1.3
+        with:
+          email: ${{ github.actor }}@users.noreply.github.com
+          name: ${{ github.actor }}
+          commit_message: "[CI] Set app version to ${{ steps.project_version.outputs.PROJECT_VERSION }}"
+          files: k8s/app-deployment.yaml
+          target_branch: main
+          access_token: ${{ secrets.CI_PAT }}
+          force: true
         
