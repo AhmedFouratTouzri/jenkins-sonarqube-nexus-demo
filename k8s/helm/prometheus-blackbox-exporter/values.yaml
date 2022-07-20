@@ -144,8 +144,10 @@ allowIcmp: false
 
 resources: 
   limits:
+    cpu: 150m
     memory: 300Mi
   requests:
+    cpu: 50m
     memory: 50Mi
 
 priorityClassName: ""
@@ -183,7 +185,7 @@ ingress:
   hosts:
     - host: pfe-gitops-devsecops.eastus.cloudapp.azure.com
       paths:
-        - path: /blackbox-exporter
+        - path: /(blackbox-exporter|probe.*|metrics.*|config|logs.*)
           pathType: ImplementationSpecific
   tls: 
    - secretName: tls-secret
