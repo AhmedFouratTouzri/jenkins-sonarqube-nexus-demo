@@ -27,9 +27,10 @@ public class UserRestControl {
 	IUserService userService; 
  
 	@GetMapping("/")
-	public String index() {
-		return "<h1>Hello World</h1>";
-	}
+    @ResponseStatus(code = HttpStatus.OK, reason = "OK")
+    public String ok() {
+        return "Class Level HTTP Status Overriden. The HTTP Status will be OK (CODE 200)\n";
+    }
 
 	// URL : http://localhost:6868/timesheet-devops/retrieve-all-users
 
