@@ -2,7 +2,9 @@ name: "Continous Integration"
 
 on:
   push:
-    branches-ignore: [ develop ]
+    branches-ignore:
+      - main
+      - develop
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ main ]
