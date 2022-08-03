@@ -26,6 +26,10 @@ public class UserRestControl {
 	@Autowired 
 	IUserService userService; 
  
+	@GetMapping("/")
+	public String index() {
+		return "<h1>Hello World</h1>";
+	}
 
 	// URL : http://localhost:6868/timesheet-devops/retrieve-all-users
 
