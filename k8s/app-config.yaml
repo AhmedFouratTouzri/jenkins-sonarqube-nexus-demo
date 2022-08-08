@@ -13,7 +13,7 @@ data:
   application.yaml: |-
     server:
       servlet:
-        context-path: /
+        context-path: /app
       port: '8080'
     management:
       endpoints:
@@ -41,8 +41,8 @@ data:
       datasource:
         password: ${MYSQL_ROOT_PASSWORD}
         driver-class-name: com.mysql.jdbc.Driver
-        username: root
-        url: jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DB}?${MYSQL_ARGS}
+        username: ${MYSQL_USER}
+        url: jdbc:mysql://localhost:3306/${MYSQL_DB}?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     logging:
       file:
         name: logs/pfe-gitops-demo.log
