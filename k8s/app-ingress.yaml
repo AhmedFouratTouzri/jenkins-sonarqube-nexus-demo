@@ -13,14 +13,14 @@ spec:
   - host: pfe-gitops-devsecops.eastus.cloudapp.azure.com
     http:
       paths:
-      - path: /(.*)
+      - path: /app(.*)
         pathType: Prefix
         backend:
           service:
             name: pfe-gitops-app-lb
             port:
               number: 8080
-      - path: /actuator/health
+      - path: /app/actuator/health
         pathType: Prefix
         backend:
           service:

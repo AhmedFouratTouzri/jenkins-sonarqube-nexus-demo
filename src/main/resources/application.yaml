@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /
+    context-path: /app
   port: '8080'
 management:
   endpoints:
