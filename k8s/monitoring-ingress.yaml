@@ -20,14 +20,14 @@ spec:
             name: kube-prometheus-stack-grafana
             port:
               number: 9090
-      - path: /prometheus
+      - path: /prometheus(.*)
         pathType: Prefix
         backend:
           service:
             name: kube-prometheus-stack-prometheus
             port:
               number: 9090
-      - path: /alertmanager
+      - path: /alertmanager(.*)
         pathType: Prefix
         backend:
           service:
