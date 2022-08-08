@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 import tn.esprit.spring.entities.User;
 import tn.esprit.spring.services.IUserService;
@@ -26,6 +29,11 @@ public class UserRestControl {
 	@Autowired 
 	IUserService userService; 
  
+	@GetMapping("/")
+    @ResponseStatus(code = HttpStatus.OK, reason = "OK")
+    public String ok() {
+        return "Class Level HTTP Status Overriden. The HTTP Status will be OK (CODE 200)\n";
+    }
 
 	// URL : http://localhost:6868/timesheet-devops/retrieve-all-users
 

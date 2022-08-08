@@ -2,7 +2,9 @@ name: "Continous Integration"
 
 on:
   push:
-    branches-ignore: [ main ]
+    branches-ignore:
+      - main
+      - develop
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ develop ]
@@ -97,9 +99,10 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       
-      - name: Update app tag in k8s deployment file
+      - name: Update app tag in k8s deployment file and set next app version
         run: |
           sed -i "s|image:.*|image: ${{ secrets.AZURE_ACR }}/pfe-gitops-demo:${{ steps.project_version.outputs.PROJECT_VERSION }}|g" k8s/app-deployment.yaml
+          mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion} versions:commit
           
       - name: Push new k8s deployment tag into Git repo
         uses: GuillaumeFalourd/git-commit-push@v1.3
