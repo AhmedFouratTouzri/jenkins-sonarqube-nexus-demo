@@ -5,7 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ main ]
+    branches: [ develop ]
     paths-ignore:
       - "k8s/**"
 
@@ -109,7 +109,7 @@ jobs:
           name: ${{ github.actor }}
           commit_message: "[CI] Set app version to ${{ steps.project_version.outputs.PROJECT_VERSION }}"
           files: k8s/app-deployment.yaml
-          target_branch: main
+          target_branch: develop
           access_token: ${{ secrets.CI_PAT }}
           force: true
         
