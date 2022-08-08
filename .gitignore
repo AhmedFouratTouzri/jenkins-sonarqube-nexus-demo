@@ -6,6 +6,8 @@
 
 # Log file
 *.log
+*.gz
+*.tgz
 
 # BlueJ files
 *.ctxt
