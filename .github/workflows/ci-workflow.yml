@@ -107,8 +107,8 @@ jobs:
         with:
           email: ${{ github.actor }}@users.noreply.github.com
           name: ${{ github.actor }}
-          commit_message: "[CI] Set app version to ${{ steps.project_version.outputs.PROJECT_VERSION }}"
-          files: k8s/app-deployment.yaml
+          commit_message: "[CI] Prepare app next version and set current version to ${{ steps.project_version.outputs.PROJECT_VERSION }}"
+          files: k8s/app-deployment.yaml pom.xml 
           target_branch: main
           access_token: ${{ secrets.CI_PAT }}
           force: true
