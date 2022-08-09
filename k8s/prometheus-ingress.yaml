@@ -20,7 +20,7 @@ spec:
           service:
             name: kube-prometheus-stack-prometheus
             port:
-              number: 9090
+              name: http-web
   tls:
   - hosts:
     - pfe-gitops-devsecops.eastus.cloudapp.azure.com
