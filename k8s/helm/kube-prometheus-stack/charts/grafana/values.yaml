@@ -162,7 +162,7 @@ serviceMonitor:
   ## If true, a ServiceMonitor CRD is created for a prometheus operator
   ## https://github.com/coreos/prometheus-operator
   ##
-  enabled: false
+  enabled: true
   path: /metrics
   #  namespace: monitoring  (defaults to use the namespace this chart is deployed to)
   labels: {}
@@ -281,11 +281,11 @@ extraContainerVolumes: []
 ##
 persistence:
   type: pvc
-  enabled: false
-  # storageClassName: default
+  enabled: true
+  storageClassName: default
   accessModes:
     - ReadWriteOnce
-  size: 10Gi
+  size: 5Gi
   # annotations: {}
   finalizers:
     - kubernetes.io/pvc-protection
@@ -586,10 +586,12 @@ grafana.ini:
     mode: console
   grafana_net:
     url: https://grafana.net
-## grafana Authentication can be enabled with the following values on grafana.ini
- # server:
-      # The full public facing url you use in browser, used for redirects and emails
- #    root_url:
+  ## grafana Authentication can be enabled with the following values on grafana.ini
+  server:
+    ## The full public facing url you use in browser, used for redirects and emails
+    root_url: https://pfe-gitops-devsecops.eastus.cloudapp.azure.com/grafana
+    domain: pfe-gitops-devsecops.eastus.cloudapp.azure.com
+    serve_from_sub_path: true
  # https://grafana.com/docs/grafana/latest/auth/github/#enable-github-in-grafana
  # auth.github:
  #    enabled: false
@@ -776,7 +778,7 @@ sidecar:
 
 ## Override the deployment namespace
 ##
-namespaceOverride: ""
+namespaceOverride: "monitoring"
 
 ## Number of old ReplicaSets to retain
 ##
