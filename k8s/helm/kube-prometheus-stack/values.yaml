@@ -106,7 +106,7 @@ global:
 
     ## Create ClusterRoles that extend the existing view, edit and admin ClusterRoles to interact with prometheus-operator CRDs
     ## Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles
-    createAggregateClusterRoles: false
+    createAggregateClusterRoles: true
     pspEnabled: false
     pspAnnotations: {}
       ## Specify pod annotations
@@ -2496,6 +2496,12 @@ prometheus:
           target_label: instance
         - target_label: __address__
           replacement: prometheus-blackbox-exporter.monitoring:9115
+
+      - job_name: pfe-app
+        metrics_path: /app/actuator/prometheus
+        static_configs:
+          - targets:
+            - https://pfe-gitops-devsecops.eastus.cloudapp.azure.com
       
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:

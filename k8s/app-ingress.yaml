@@ -4,8 +4,8 @@ metadata:
   name: pfe-gitops-app-ingress
   namespace: gitops
   annotations:
-    #nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: nginx
@@ -14,13 +14,6 @@ spec:
     http:
       paths:
       - path: /app(.*)
-        pathType: Prefix
-        backend:
-          service:
-            name: pfe-gitops-app-lb
-            port:
-              number: 8080
-      - path: /app/actuator/health
         pathType: Prefix
         backend:
           service:

@@ -233,9 +233,9 @@ serviceMonitor:
 
   targets:
    - name: pfe-gitops-app                    # Human readable URL that will appear in Prometheus / AlertManager
-     url: https://pfe-gitops-devsecops.eastus.cloudapp.azure.com/metrics  # The URL that blackbox will scrape
+     url: https://pfe-gitops-devsecops.eastus.cloudapp.azure.com/app/actuator/health  # The URL that blackbox will scrape
      labels: {}                       # Map of labels for ServiceMonitor. Overrides value set in `defaults`
-     interval: 60s                    # Scraping interval. Overrides value set in `defaults`
+     interval: 15s                    # Scraping interval. Overrides value set in `defaults`
      scrapeTimeout: 60s               # Scrape timeout. Overrides value set in `defaults`
      module: http_2xx                 # Module used for scraping. Overrides value set in `defaults`
      additionalMetricsRelabels: {}    # Map of metric labels and values to add
