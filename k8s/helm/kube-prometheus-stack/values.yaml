@@ -2497,6 +2497,20 @@ prometheus:
         - target_label: __address__
           replacement: prometheus-blackbox-exporter.monitoring:9115
 
+      - job_name: pfe-app
+        metrics_path: /app/actuator/prometheus
+        scrape_interval: 5s
+        static_configs:
+          - targets: 
+            - https://pfe-gitops-devsecops.eastus.cloudapp.azure.com
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: pfe-gitops-app-lb.gitops:8080
+
       
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:
