@@ -517,7 +517,7 @@ alertmanager:
 
     ## The external URL the Alertmanager instances will be available under. This is necessary to generate correct URLs. This is necessary if Alertmanager is not served from root of a DNS name. string  false
     ##
-    externalUrl: "https://pfe-gitops-devsecops.eastus.cloudapp.azure.com/alertmanager"
+    externalUrl: https://pfe-gitops-devsecops.eastus.cloudapp.azure.com/alertmanager
 
     ## The route prefix Alertmanager registers HTTP handlers for. This is useful, if using ExternalURL and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true,
     ## but the server serves requests under a different route prefix. For example for use with kubectl proxy.
@@ -2226,7 +2226,7 @@ prometheus:
 
     ## External URL at which Prometheus will be reachable.
     ##
-    externalUrl: "https://pfe-gitops-devsecops.eastus.cloudapp.azure.com/prometheus"
+    externalUrl: https://pfe-gitops-devsecops.eastus.cloudapp.azure.com/prometheus
 
     ## Define which Nodes the Pods are scheduled on.
     ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -2488,7 +2488,7 @@ prometheus:
           module: [http_2xx]
         static_configs:
           - targets:
-            - pfe-gitops-devsecops.eastus.cloudapp.azure.com
+            - https://pfe-gitops-devsecops.eastus.cloudapp.azure.com
         relabel_configs:
         - source_labels: [__address__]
           target_label: __param_target
@@ -2501,7 +2501,7 @@ prometheus:
         metrics_path: /app/actuator/prometheus
         static_configs:
           - targets:
-            - pfe-gitops-devsecops.eastus.cloudapp.azure.com
+            - https://pfe-gitops-devsecops.eastus.cloudapp.azure.com
       
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:

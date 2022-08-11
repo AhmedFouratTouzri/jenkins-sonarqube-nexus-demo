@@ -36,7 +36,7 @@ customLabels: {}
   # app: kube-state-metrics
 
 ## set to true to add the release label so scraping of the servicemonitor with kube-prometheus-stack works out of the box
-releaseLabel: false
+releaseLabel: true
 
 hostNetwork: false
 
@@ -66,10 +66,10 @@ serviceAccount:
 
 prometheus:
   monitor:
-    enabled: false
+    enabled: true
     additionalLabels: {}
     namespace: ""
-    jobLabel: ""
+    jobLabel: "kube-state-metrics"
     interval: ""
     scrapeTimeout: ""
     proxyUrl: ""
