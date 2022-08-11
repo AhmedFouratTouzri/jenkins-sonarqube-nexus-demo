@@ -2483,12 +2483,11 @@ prometheus:
     ##
     additionalScrapeConfigs:
       - job_name: blackbox
-        metrics_path: /probe
+        metrics_path: "/probe"
         params:
           module: [http_2xx]
         static_configs:
-          - targets:
-            - https://pfe-gitops-devsecops.eastus.cloudapp.azure.com
+          - targets: ['https://pfe-gitops-devsecops.eastus.cloudapp.azure.com']
         relabel_configs:
         - source_labels: [__address__]
           target_label: __param_target
@@ -2498,10 +2497,9 @@ prometheus:
           replacement: prometheus-blackbox-exporter.monitoring:9115
 
       - job_name: pfe-app
-        metrics_path: /app/actuator/prometheus
+        metrics_path: "/app/actuator/prometheus"
         static_configs:
-          - targets:
-            - https://pfe-gitops-devsecops.eastus.cloudapp.azure.com
+          - targets: ['https://pfe-gitops-devsecops.eastus.cloudapp.azure.com']
       
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:
