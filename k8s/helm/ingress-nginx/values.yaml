@@ -607,7 +607,8 @@ controller:
     namespaceSelector: {}
     objectSelector: {}
     # -- Labels to be added to admission webhooks
-    labels: {}
+    labels: 
+      argocd.argoproj.io/compare-options: IgnoreExtraneous
 
     # -- Use an existing PSP instead of creating one
     existingPsp: ""
@@ -684,15 +685,16 @@ controller:
       enabled: true
       additionalLabels: 
       ## The label to use to retrieve the job name from.
-        jobLabel: "serviceMonitor"
+        jobLabel: "nginx-ingress"
       namespace: ""
-      namespaceSelector: {}
+      namespaceSelector: 
+        any: true
       ## Default: scrape .Release.Namespace only
       ## To scrape all, use the following:
       ## namespaceSelector:
       ##   any: true
       scrapeInterval: 30s
-      # honorLabels: true
+      honorLabels: true
       targetLabels: []
       relabelings: []
       metricRelabelings: []
