@@ -729,7 +729,7 @@ alertmanager:
 
     # Additional VolumeMounts on the output StatefulSet definition.
     volumeMounts:
-      - mountPath: /etc/config
+      - mountPath: /etc/alertmanager
         name: init-alertmanager-config
 
     ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
@@ -739,7 +739,7 @@ alertmanager:
         command:
           - sh
           - -c
-          - sed -i -r "s/PFE_SMTP_PASSWORD/${PFE_SMTP_PASSWORD}/g" /etc/config/alertmanager.yaml; sed -i -r "s/PFE_SMTP_USERNAME/${PFE_SMTP_USERNAME}/g" /etc/config/alertmanager.yaml || echo NOK;
+          - sed -i -r "s/PFE_SMTP_PASSWORD/${PFE_SMTP_PASSWORD}/g" /etc/alertmanager/config/alertmanager.yaml; sed -i -r "s/PFE_SMTP_USERNAME/${PFE_SMTP_USERNAME}/g" /etc/alertmanager/config/alertmanager.yaml || echo NOK;
         image: busybox:latest
         imagePullPolicy: IfNotPresent
         envFrom:
@@ -753,7 +753,7 @@ alertmanager:
             cpu: 10m
             memory: 50Mi
         volumeMounts:
-          - mountPath: /etc/config
+          - mountPath: /etc/alertmanager
             name: init-alertmanager-config
 
     ## Priority class assigned to the Pods
