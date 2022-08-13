@@ -167,17 +167,35 @@ alertmanager:
     global:
       resolve_timeout: 5m
     route:
-      group_by: ['job']
+      receiver: default
+      group_by: ['job', 'alertname']
       group_wait: 30s
       group_interval: 5m
-      repeat_interval: 12h
-      receiver: 'null'
+      repeat_interval: 15m
       routes:
-      - receiver: 'null'
-        matchers:
-          - alertname =~ "InfoInhibitor|Watchdog"
+      - receiver: deadmansswitch
+        match_re:
+          alertname: DeadMansSwitch|KuredReplicasMismatch|KuredPodNotReady|InfoInhibitor|Watchdog
+        repeat_interval: 5m
+      - receiver: email-alerts
+        match_re:
+          severity: warning|major|critical
+        repeat_interval: 10m
+        continue: true
     receivers:
-    - name: 'null'
+    - name: default
+    - name: deadmansswitch
+    - name: email-alerts
+      email_configs:
+        - to: ahmedfourat.touzri@esprit.tn
+          from: ahmedfourat.touzri@esprit.tn
+          smarthost: smtp.gmail.com:587
+          auth_username: PFE_SMTP_USERNAME
+          auth_password: PFE_SMTP_PASSWORD
+          headers:
+            subject: "[PFE][Dev][{{ .CommonLabels.severity | toUpper }}][{{ .Status | toUpper }}] - {{ .CommonLabels.alertname }}"
+          html: '{{ template "custom_pfe_email" . }}'
+          send_resolved: true
     templates:
     - '/etc/alertmanager/config/*.tmpl'
 
@@ -199,32 +217,131 @@ alertmanager:
   ## ref: https://prometheus.io/docs/alerting/notifications/
   ##      https://prometheus.io/docs/alerting/notification_examples/
   ##
-  templateFiles: {}
+  templateFiles: 
   #
   ## An example template:
-  #   template_1.tmpl: |-
-  #       {{ define "cluster" }}{{ .ExternalURL | reReplaceAll ".*alertmanager\\.(.*)" "$1" }}{{ end }}
-  #
-  #       {{ define "slack.myorg.text" }}
-  #       {{- $root := . -}}
-  #       {{ range .Alerts }}
-  #         *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
-  #         *Cluster:* {{ template "cluster" $root }}
-  #         *Description:* {{ .Annotations.description }}
-  #         *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
-  #         *Runbook:* <{{ .Annotations.runbook }}|:spiral_note_pad:>
-  #         *Details:*
-  #           {{ range .Labels.SortedPairs }} - *{{ .Name }}:* `{{ .Value }}`
-  #           {{ end }}
-  #       {{ end }}
-  #       {{ end }}
+    pfe_template.tmpl: |-
+        {{ define "cluster" }}{{ .ExternalURL | reReplaceAll ".*alertmanager\\.(.*)" "$1" }}{{ end }}
+        {{ define "__alertmanager" }}PFE-GitOps-DevSecOps AlertManager{{ end }}
+        {{ define "__alertmanagerURL" }}{{ .ExternalURL }}/#/alerts?receiver={{ .Receiver | urlquery }}{{ end }}
+        {{ define "__subject" }}[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .GroupLabels.SortedPairs.Values | join " " }} {{ if gt (len .CommonLabels) (len .GroupLabels) }}({{ with .CommonLabels.Remove .GroupLabels.Names }}{{ .Values | join " " }}{{ end }}){{ end }}{{ end }}
+        {{ define "__description" }}{{ end }}
+
+        {{ define "__text_alert_list" }}{{ range . }}Labels:
+        {{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}
+        {{ end }}Annotations:
+        {{ range .Annotations.SortedPairs }} - {{ .Name }} = {{ .Value }}
+        {{ end }}Source: {{ .GeneratorURL }}
+        {{ end }}{{ end }}
+
+        {{ define "email.default.subject" }}{{ template "__subject" . }}{{ end }}
+        {{ define "custom_pfe_email" }}
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+        <head style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+        <meta name="viewport" content="width=device-width" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+        <title style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">{{ template "__subject" . }}</title>
+
+        </head>
+
+        <body itemscope="" itemtype="http://schema.org/EmailMessage" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; height: 100%; line-height: 1.6em; width: 100% !important; background-color: #f6f6f6; margin: 0; padding: 0;" bgcolor="#f6f6f6">
+        <img style="display: block; margin-left: auto; margin-right: auto;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbQAAABRCAMAAACNFKPxAAAC/VBMVEVMaXFjaW5ubm5ubm5vb29vb29vb29vb29vb29vb29vb29ubm5ubm5vb29wcHBwcHBwcHBwcHBwcHBxcXFxcXFwcHBvb29vb29wcHBvb29vb29vb29tbW1vb29wcHBwcHBwcHBvb29vb29vb29wcHBvb29wcHBwcHBwcHBvb29ubm5vb29wcHBwcHBwcHBvb29vb29wcHBwcHBwcHBwcHBwcHBwcHBvb29wcHBxcXFwcHBvb29wcHBwcHBubm5lZ2pwcHBwcHBvb29wcHBwcHBwcHBubm5ra2ttbW1vb29vb29wcHBwcHBwcHBvb29wcHBvb29vb29wcHBvb29wcHBvb29vb25wcHBwcHBpaWlvb29wcHBwcHBwcHBwcHBvb29wcHBwcHBwcHBwcHBvb29wcHBubm5sbGxwcHBwcHBwcHBwcHBvb29vb29vb29wcHBvb29vb29vb29wcHBvb29wcHBvb29vb29vb29wcHBwcHBwcHBvb29ycnJxcXFvb29wcHBycnJvb29vbm5wcHBwcHBxcXFubm5vb29wcHBubm1ubm5tbm5vb29ubm5wcHBwcHBubm5ycG9wcHBwcHBvb25wcHBwcHBvb29vb29vb29wcHBwcHBxcXEAZa8AZbMAZrMAZrMBZrIAZrIAZrI7a5Bvb29vb29vb28AZbAAZrIAZ7MAZ7MAZrIAZrEAZrIya5ZxcXBxcXFxcXFwcHAAZLAAZrMBZ7MAZrIAZrJxcXEAZrIAZrIAZrEAZ7MAZrJubm5xcXEAZLhwcHBvb28AZbQCZ7JxcXFxcXFxcXEAZrJxcXFxcXFycnJxcXFxcXFxcXEAZLdxcXFycnJycnJxcXFzc3MAZbBxcXFxcXEAZrNvb29xcXF0dHRycnJycnIAZrRxcXEAZ7MAabYAaLQnaZsyapQAZbEAZrEAZrIAZbAAZbEAZ7MAZ7AAZrMAZrAAZrIAZrMAZ7MAZrEAZbF1dXUAZbAAZ7IAZbEAZ7MAZ7MAZ7MAZbEsapgAZ7Mq6F7kAAAA/3RSTlMAAg0eKjZFQzUoGwwIIEhxm7bO3OXszLOVbUEcBjJuq9v0/v//8tajZy0JZub9/O7exK2dkIt+kaCzyOHiWhkBgdT8k2Q/HwMFDyNqy+/5dCQm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">
+        <table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
+            <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+            <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+            <td width="600" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; width: 100% !important; margin: 0 auto; padding: 0;" valign="top">
+                <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff">
+                    <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                    <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #E6522C; margin: 0; padding: 20px;" align="center"; bgcolor="#E6522C"; valign="top">
+                    {{ .Alerts | len }} alert{{ if gt (len .Alerts) 1 }}s{{ end }} for {{ range .GroupLabels.SortedPairs }}
+                        {{ .Name }}={{ .Value }}
+                    {{ end }}
+                    </td>
+                    </tr>
+                    <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                    <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 10px;" valign="top">
+                        <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                            <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                            <a href="{{ template "__alertmanagerURL" . }}" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">View in {{ template "__alertmanager" . }}</a>
+                            </td>
+                        </tr>
+                        {{ if gt (len .Alerts.Firing) 0 }}
+                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                            <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                            <strong style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">[{{ .Alerts.Firing | len }}] Firing</strong>
+                            </td>
+                        </tr>
+                        {{ end }}
+                        {{ range .Alerts.Firing }}
+                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                            <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                            <strong style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">Labels</strong><br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            Job: {{ .Labels.metric_for }}<br>Alertname: {{ .Labels.alertname }}<br>Environment: {{ .Labels.metric_db }}<br>Metric type: {{ .Labels.metric_namespace }}<br>Severity: {{ .Labels.severity }}<br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            {{ if gt (len .Annotations) 0 }}<strong style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">Annotations</strong><br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />{{ end }}
+                            Description: {{ .Annotations.description }}<br>Alert explanation: {{ .Annotations.message }}<br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            <a href="{{ .GeneratorURL }}" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #348eda; text-decoration: underline; margin: 0;">Source</a><br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            </td>
+                        </tr>
+                        {{ end }}
+
+                        {{ if gt (len .Alerts.Resolved) 0 }}
+                            {{ if gt (len .Alerts.Firing) 0 }}
+                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                            <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                            <br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            <hr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            <br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            </td>
+                        </tr>
+                            {{ end }}
+                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                            <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                            <strong style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">[{{ .Alerts.Resolved | len }}] Resolved</strong>
+                            </td>
+                        </tr>
+                        {{ end }}
+                        {{ range .Alerts.Resolved }}
+                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                            <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                            <strong style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">Labels</strong><br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            Job: {{ .Labels.metric_for }}<br>Alertname: {{ .Labels.alertname }}<br>Environment: {{ .Labels.metric_db }}<br>Metric type: {{ .Labels.metric_namespace }}<br>Severity: {{ .Labels.severity }}<br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            {{ if gt (len .Annotations) 0 }}<strong style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">Annotations</strong><br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />{{ end }}
+                            Description: {{ .Annotations.description }}<br>Alert explanation: {{ .Annotations.message }}<br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            <a href="{{ .GeneratorURL }}" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #348eda; text-decoration: underline; margin: 0;">Source</a><br style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                            </td>
+                        </tr>
+                        {{ end }}
+                        </table>
+                    </td>
+                    </tr>
+                </table>
+
+                <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
+                    <table width="100%" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                    <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                        <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; color: #999; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="{{ .ExternalURL }}" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;"><b>Sent by {{ template "__alertmanager" . }}</b></a></td>
+                    </tr>
+                    </table>
+                </div></div>
+            </td>
+            <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+            </tr>
+        </table>
+
+        </body>
+        </html>
+        {{ end }}
 
   ingress:
-    enabled: false
+    enabled: true
 
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-    # ingressClassName: nginx
+    ingressClassName: nginx
 
     annotations: {}
 
@@ -232,25 +349,25 @@ alertmanager:
 
     ## Hosts must be provided if Ingress is enabled.
     ##
-    hosts: []
-      # - alertmanager.domain.com
+    hosts:
+      - pfe-gitops-devsecops.eastus.cloudapp.azure.com
 
     ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
     ##
-    paths: []
-    # - /
+    paths:
+      - /alertmanager
 
     ## For Kubernetes >= 1.18 you should specify the pathType (determines how Ingress paths should be matched)
     ## See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#better-path-matching-with-path-types
-    # pathType: ImplementationSpecific
+    pathType: ImplementationSpecific
 
     ## TLS configuration for Alertmanager Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: []
-    # - secretName: alertmanager-general-tls
-    #   hosts:
-    #   - alertmanager.example.com
+    tls: 
+      - secretName: tls-secret
+        hosts:
+        - pfe-gitops-devsecops.eastus.cloudapp.azure.com
 
   ## Configuration for Alertmanager secret
   ##
@@ -606,14 +723,38 @@ alertmanager:
     containers: []
 
     # Additional volumes on the output StatefulSet definition.
-    volumes: []
+    volumes: 
+      - emptyDir: {}
+        name: init-alertmanager-config
 
     # Additional VolumeMounts on the output StatefulSet definition.
-    volumeMounts: []
+    volumeMounts:
+      - mountPath: /etc/config
+        name: init-alertmanager-config
 
     ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
     ## (permissions, dir tree) on mounted volumes before starting prometheus
-    initContainers: []
+    initContainers: 
+      - name: init-alertmanager
+        command:
+          - sh
+          - -c
+          - sed -i -r "s/PFE_SMTP_PASSWORD/${PFE_SMTP_PASSWORD}/g" /etc/config/alertmanager.yaml; sed -i -r "s/PFE_SMTP_USERNAME/${PFE_SMTP_USERNAME}/g" /etc/config/alertmanager.yaml;
+        image: busybox:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: alertmanager-smtp-auth
+        resources:
+          limits:
+            cpu: 10m
+            memory: 50Mi
+          requests:
+            cpu: 10m
+            memory: 50Mi
+        volumeMounts:
+          - mountPath: /etc/config
+            name: init-alertmanager-config
 
     ## Priority class assigned to the Pods
     ##
