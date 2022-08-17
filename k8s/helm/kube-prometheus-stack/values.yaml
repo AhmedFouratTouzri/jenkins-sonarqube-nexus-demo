@@ -2639,7 +2639,7 @@ prometheus:
           replacement: prometheus-blackbox-exporter.monitoring:9115
 
       - job_name: nginx-ingress
-        metrics_path: /
+        metrics_path: /metrics
         scrape_interval: 5s
         static_configs:
           - targets: 
