@@ -2638,6 +2638,20 @@ prometheus:
         - target_label: __address__
           replacement: prometheus-blackbox-exporter.monitoring:9115
 
+      - job_name: nginx-ingress
+        metrics_path: /
+        scrape_interval: 5s
+        static_configs:
+          - targets: 
+            - nginx-ingress-ingress-nginx-controller-metrics.nginx-ingress.svc.cluster.local
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: nginx-ingress-ingress-nginx-controller-metrics.nginx-ingress:10254
+
       - job_name: pfe-app
         metrics_path: /app/actuator/prometheus
         scrape_interval: 5s
