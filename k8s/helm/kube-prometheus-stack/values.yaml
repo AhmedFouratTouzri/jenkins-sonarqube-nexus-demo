@@ -723,16 +723,10 @@ alertmanager:
     containers: []
 
     # Additional volumes on the output StatefulSet definition.
-    volumes: 
-      - name: config-volume
-        secret:
-          defaultMode: 420
-          secretName: alertmanager-kube-prometheus-stack-alertmanager-generated
+    volumes: {}
 
     # Additional VolumeMounts on the output StatefulSet definition.
-    volumeMounts:
-      - mountPath: /etc/alertmanager/config
-        name: config-volume
+    volumeMounts: {}
 
     ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
     ## (permissions, dir tree) on mounted volumes before starting prometheus
