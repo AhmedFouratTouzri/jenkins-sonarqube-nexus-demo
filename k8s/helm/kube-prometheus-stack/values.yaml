@@ -724,13 +724,15 @@ alertmanager:
 
     # Additional volumes on the output StatefulSet definition.
     volumes: 
-      - emptyDir: {}
-        name: init-alertmanager-config
+      - name: config-volume
+        secret:
+          defaultMode: 420
+          secretName: alertmanager-kube-prometheus-stack-alertmanager-generated
 
     # Additional VolumeMounts on the output StatefulSet definition.
     volumeMounts:
-      - mountPath: /etc/alertmanager
-        name: init-alertmanager-config
+      - mountPath: /etc/alertmanager/config
+        name: config-volume
 
     ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
     ## (permissions, dir tree) on mounted volumes before starting prometheus
@@ -739,7 +741,7 @@ alertmanager:
         command:
           - sh
           - -c
-          - sed -i -r "s|PFE_SMTP_PASSWORD|${PFE_SMTP_PASSWORD}|g" /etc/alertmanager/config/alertmanager.yaml; sed -i -r "s|PFE_SMTP_USERNAME|${PFE_SMTP_USERNAME}|g" /etc/alertmanager/config/alertmanager.yaml || echo NOK;
+          - sed -i -r "s|PFE_SMTP_PASSWORD|${PFE_SMTP_PASSWORD}|g" /etc/alertmanager/config/alertmanager.yaml; sed -i -r "s|PFE_SMTP_USERNAME|${PFE_SMTP_USERNAME}|g" /etc/alertmanager/config/alertmanager.yaml || echo NOK && sleep 600;
         image: busybox:latest
         imagePullPolicy: IfNotPresent
         envFrom:
@@ -753,8 +755,8 @@ alertmanager:
             cpu: 10m
             memory: 50Mi
         volumeMounts:
-          - mountPath: /etc/alertmanager
-            name: init-alertmanager-config
+          - mountPath: /etc/alertmanager/config
+            name: config-volume
 
     ## Priority class assigned to the Pods
     ##
