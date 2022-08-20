@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: pfe-gitops-demo-app
-        image: pfegitops.azurecr.io/pfe-gitops-demo:1.136
+        image: pfegitops.azurecr.io/pfe-gitops-demo:1.137
         imagePullPolicy: Always
         env:
           - name: MYSQL_HOST
