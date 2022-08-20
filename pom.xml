@@ -11,7 +11,7 @@
 
 	<groupId>tn.esprit.spring</groupId>
 	<artifactId>pfe-gitops-demo</artifactId>
-	<version>1.180</version>
+	<version>1.181</version>
 	<description>PFE GitOps demo app</description>
 
 	<properties>
