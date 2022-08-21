@@ -60,7 +60,7 @@ spec:
           authUsername: ahmedfourat.touzri@esprit.tn
           authPassword:
             name: alertmanager-smtp-auth
-            key: password
+            key: PFE_SMTP_PASSWORD
           to: ahmedfourat.touzri@esprit.tn
           from: pfe-gitops-devsecops@azure.cloud 
           
