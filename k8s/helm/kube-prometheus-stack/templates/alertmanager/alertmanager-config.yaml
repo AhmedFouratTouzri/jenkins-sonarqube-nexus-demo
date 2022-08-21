@@ -6,6 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/instance: kube-prometheus-stack
     app.kubernetes.io/name: alertmanager-config
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: kube-prometheus-stack
+    meta.helm.sh/release-namespace: monitoring
 spec:
   inhibitRules: []
   route:
