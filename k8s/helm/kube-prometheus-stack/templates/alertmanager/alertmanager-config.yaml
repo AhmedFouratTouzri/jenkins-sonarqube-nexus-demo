@@ -42,5 +42,5 @@ spec:
           from: pfe-gitops-devsecops@azure.cloud
           headers:
             - key: subject
-              value: "[PFE][Dev][{{ .CommonLabels.severity | toUpper }}][{{ .Status | toUpper }}] - {{ .CommonLabels.alertname }}" 
+              value: "[PFE][Dev][{{ .CommonLabels.severity }}][{{ .Status }}] - {{ .CommonLabels.alertname }}" 
           html: '{{ template "custom_pfe_email" . }}'
