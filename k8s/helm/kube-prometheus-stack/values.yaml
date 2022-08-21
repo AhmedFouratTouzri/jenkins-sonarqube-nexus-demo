@@ -166,6 +166,9 @@ alertmanager:
   config:
     global:
       resolve_timeout: 5m
+    receivers:
+      email_configs:
+        html: '{{ template "custom_pfe_email" . }}'
     templates:
       - '/etc/alertmanager/config/*.tmpl'
     # route:

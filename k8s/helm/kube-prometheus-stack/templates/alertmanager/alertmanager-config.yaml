@@ -40,4 +40,4 @@ spec:
             key: password
           to: ahmedfourat.touzri@esprit.tn
           from: pfe-gitops-devsecops@azure.cloud 
-          html: '{{ template "custom_pfe_email" . }}'
+          
