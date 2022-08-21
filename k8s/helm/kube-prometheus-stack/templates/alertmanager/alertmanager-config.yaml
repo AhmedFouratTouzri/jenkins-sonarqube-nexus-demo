@@ -4,11 +4,31 @@ metadata:
   name: kube-prometheus-stack-alertmanager-config
   namespace: monitoring
   labels:
+    app: kube-prometheus-stack-prometheus
     app.kubernetes.io/instance: kube-prometheus-stack
     app.kubernetes.io/name: alertmanager-config
+    meta.helm.sh/release-namespace: monitoring
+    app.kubernetes.io/instance: kube-prometheus-stack
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 35.3.1
+    chart: kube-prometheus-stack-35.3.1
+    heritage: Helm
+    release: kube-prometheus-stack
+  annotations:
     meta.helm.sh/release-name: kube-prometheus-stack
     meta.helm.sh/release-namespace: monitoring
+    app: kube-prometheus-stack-prometheus
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/name: alertmanager-config
+    meta.helm.sh/release-namespace: monitoring
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 35.3.1
+    chart: kube-prometheus-stack-35.3.1
+    heritage: Helm
+    release: kube-prometheus-stack
 spec:
   inhibitRules: []
   route:
