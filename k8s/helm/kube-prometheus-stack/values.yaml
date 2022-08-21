@@ -166,38 +166,40 @@ alertmanager:
   config:
     global:
       resolve_timeout: 5m
-    route:
-      receiver: default
-      group_by: ['job', 'alertname']
-      group_wait: 30s
-      group_interval: 5m
-      repeat_interval: 15m
-      routes:
-      - receiver: deadmansswitch
-        match_re:
-          alertname: DeadMansSwitch|KuredReplicasMismatch|KuredPodNotReady|InfoInhibitor|Watchdog
-        repeat_interval: 5m
-      - receiver: email-alerts
-        match_re:
-          severity: warning|major|critical
-        repeat_interval: 10m
-        continue: true
-    receivers:
-    - name: default
-    - name: deadmansswitch
-    - name: email-alerts
-      email_configs:
-        - to: ahmedfourat.touzri@esprit.tn
-          from: ahmedfourat.touzri@esprit.tn
-          smarthost: smtp.gmail.com:587
-          auth_username: PFE_SMTP_USERNAME
-          auth_password: PFE_SMTP_PASSWORD
-          headers:
-            subject: "[PFE][Dev][{{ .CommonLabels.severity | toUpper }}][{{ .Status | toUpper }}] - {{ .CommonLabels.alertname }}"
-          html: '{{ template "custom_pfe_email" . }}'
-          send_resolved: true
     templates:
-    - '/etc/alertmanager/config/*.tmpl'
+      - '/etc/alertmanager/config/*.tmpl'
+    # route:
+    #   receiver: default
+    #   group_by: ['job', 'alertname']
+    #   group_wait: 30s
+    #   group_interval: 5m
+    #   repeat_interval: 15m
+    #   routes:
+    #   - receiver: deadmansswitch
+    #     match_re:
+    #       alertname: DeadMansSwitch|KuredReplicasMismatch|KuredPodNotReady|InfoInhibitor|Watchdog
+    #     repeat_interval: 5m
+    #   - receiver: email-alerts
+    #     match_re:
+    #       severity: warning|major|critical
+    #     repeat_interval: 10m
+    #     continue: true
+    # receivers:
+    # - name: default
+    # - name: deadmansswitch
+    # - name: email-alerts
+    #   email_configs:
+    #     - to: ahmedfourat.touzri@esprit.tn
+    #       from: ahmedfourat.touzri@esprit.tn
+    #       smarthost: smtp.gmail.com:587
+    #       auth_username: PFE_SMTP_USERNAME
+    #       auth_password: PFE_SMTP_PASSWORD
+    #       headers:
+    #         subject: "[PFE][Dev][{{ .CommonLabels.severity | toUpper }}][{{ .Status | toUpper }}] - {{ .CommonLabels.alertname }}"
+    #       html: '{{ template "custom_pfe_email" . }}'
+    #       send_resolved: true
+    # templates:
+    # - '/etc/alertmanager/config/*.tmpl'
 
   ## Pass the Alertmanager configuration directives through Helm's templating
   ## engine. If the Alertmanager configuration contains Alertmanager templates,
@@ -580,7 +582,9 @@ alertmanager:
 
     ## Namespaces to be selected for AlertmanagerConfig discovery. If nil, only check own namespace.
     ##
-    alertmanagerConfigNamespaceSelector: {}
+    alertmanagerConfigNamespaceSelector: 
+      matchLabels:
+        name: monitoring
     ## Example which selects all namespaces
     ## with label "alertmanagerconfig" with values any of "example-namespace" or "example-namespace-2"
     # alertmanagerConfigNamespaceSelector:
@@ -730,27 +734,27 @@ alertmanager:
 
     ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
     ## (permissions, dir tree) on mounted volumes before starting prometheus
-    initContainers: 
-      - name: init-alertmanager
-        command:
-          - sh
-          - -c
-          - sed -i -r "s|PFE_SMTP_PASSWORD|${PFE_SMTP_PASSWORD}|g" /etc/alertmanager/config/alertmanager.yaml; sed -i -r "s|PFE_SMTP_USERNAME|${PFE_SMTP_USERNAME}|g" /etc/alertmanager/config/alertmanager.yaml || echo NOK && sleep 600;
-        image: busybox:latest
-        imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: alertmanager-smtp-auth
-        resources:
-          limits:
-            cpu: 10m
-            memory: 50Mi
-          requests:
-            cpu: 10m
-            memory: 50Mi
-        volumeMounts:
-          - mountPath: /etc/alertmanager/config
-            name: config-volume
+    initContainers: {}
+      # - name: init-alertmanager
+      #   command:
+      #     - sh
+      #     - -c
+      #     - sed -i -r "s|PFE_SMTP_PASSWORD|${PFE_SMTP_PASSWORD}|g" /etc/alertmanager/config/alertmanager.yaml; sed -i -r "s|PFE_SMTP_USERNAME|${PFE_SMTP_USERNAME}|g" /etc/alertmanager/config/alertmanager.yaml || echo NOK && sleep 600;
+      #   image: busybox:latest
+      #   imagePullPolicy: IfNotPresent
+      #   envFrom:
+      #     - secretRef:
+      #         name: alertmanager-smtp-auth
+      #   resources:
+      #     limits:
+      #       cpu: 10m
+      #       memory: 50Mi
+      #     requests:
+      #       cpu: 10m
+      #       memory: 50Mi
+      #   volumeMounts:
+      #     - mountPath: /etc/alertmanager/config
+      #       name: config-volume
 
     ## Priority class assigned to the Pods
     ##

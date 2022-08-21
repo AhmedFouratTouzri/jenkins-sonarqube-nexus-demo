@@ -1,0 +1,46 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: kube-prometheus-stack-alertmanager-config
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/name: alertmanager-config
+spec:
+  inhibitRules: []
+  route:
+    receiver: "default"
+    groupBy: ['job', 'alertname']
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 15m
+    routes:
+      - receiver: deadmansswitch
+        groupBy: 
+          - alertname
+        match_re: 
+          alertname: DeadMansSwitch|KuredReplicasMismatch|KuredPodNotReady|InfoInhibitor|Watchdog
+        repeatInterval: 10m
+      - receiver: email-alerts
+        match_re:
+          severity: warning|major|critical
+        repeatInterval: 10m
+        continue: true
+  receivers:
+    - name: default
+    - name: deadmansswitch
+    - name: email-alerts
+      emailConfigs:
+        - sendResolved: true
+          smarthost: smtp.gmail.com:587
+          requireTLS: true
+          authUsername: ahmedfourat.touzri@esprit.tn
+          authPassword:
+            name: alertmanager-smtp-auth
+            key: password
+          to: ahmedfourat.touzri@esprit.tn
+          from: pfe-gitops-devsecops@azure.cloud
+          headers:
+            - key: subject
+              value: "[PFE][Dev][{{ .CommonLabels.severity | toUpper }}][{{ .Status | toUpper }}] - {{ .CommonLabels.alertname }}" 
+          html: '{{ template "custom_pfe_email" . }}'
