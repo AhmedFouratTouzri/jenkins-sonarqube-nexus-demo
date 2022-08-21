@@ -39,8 +39,5 @@ spec:
             name: alertmanager-smtp-auth
             key: password
           to: ahmedfourat.touzri@esprit.tn
-          from: pfe-gitops-devsecops@azure.cloud
-          headers:
-            - key: subject
-              value: "[PFE][Dev][{{ .CommonLabels.severity }}][{{ .Status }}] - {{ .CommonLabels.alertname }}" 
+          from: pfe-gitops-devsecops@azure.cloud 
           html: '{{ template "custom_pfe_email" . }}'
