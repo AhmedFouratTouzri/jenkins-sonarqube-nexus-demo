@@ -2669,6 +2669,27 @@ prometheus:
         - target_label: __address__
           replacement: pfe-gitops-app-lb.gitops:8080
 
+      - job_name: argocd-metrics
+        metrics_path: /metrics
+        scrape_interval: 5s
+        static_configs:
+          - targets: 
+            - http://argocd-metrics.argocd.svc.cluster.local:8082
+      
+      - job_name: argocd-server-metrics
+        metrics_path: /metrics
+        scrape_interval: 5s
+        static_configs:
+          - targets: 
+            - http://argocd-server-metrics.argocd.svc.cluster.local:8083
+      
+      - job_name: argocd-notifications-controller-metrics
+        metrics_path: /metrics
+        scrape_interval: 5s
+        static_configs:
+          - targets: 
+            - http://argocd-notifications-controller-metrics.argocd.svc.cluster.local:9001
+      
       
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:
