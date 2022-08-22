@@ -2675,6 +2675,13 @@ prometheus:
         static_configs:
           - targets: 
             - http://argocd-metrics.argocd.svc.cluster.local:8082
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: argocd-metrics.argocd.svc.cluster.local:8082
       
       - job_name: argocd-server-metrics
         metrics_path: /metrics
@@ -2682,6 +2689,13 @@ prometheus:
         static_configs:
           - targets: 
             - http://argocd-server-metrics.argocd.svc.cluster.local:8083
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: argocd-server-metrics.argocd.svc.cluster.local:8083
       
       - job_name: argocd-notifications-controller-metrics
         metrics_path: /metrics
@@ -2689,7 +2703,13 @@ prometheus:
         static_configs:
           - targets: 
             - http://argocd-notifications-controller-metrics.argocd.svc.cluster.local:9001
-      
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: argocd-notifications-controller-metrics.argocd.svc.cluster.local:9001
       
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:
