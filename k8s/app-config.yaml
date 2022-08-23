@@ -35,6 +35,8 @@ data:
         enabled: true
         mode: full
     spring:
+      application:
+        name: "pfe-gitops-demo"
       jpa:
         properties:
           hibernate:
@@ -52,7 +54,10 @@ data:
         name: logs/pfe-gitops-demo.log
       level:
         org:
-          springframework: 'warn'
+          springframework: 
+            web:
+              servlet:
+                DispatcherServlet: DEBUG
         com:
           zaxxer:
             hikari: warn
