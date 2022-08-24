@@ -166,43 +166,38 @@ alertmanager:
   config:
     global:
       resolve_timeout: 5m
+    route:
+      receiver: default
+      group_by: ['job', 'alertname']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 15m
+      routes:
+      - receiver: deadmansswitch
+        match_re:
+          alertname: DeadMansSwitch|KuredReplicasMismatch|KuredPodNotReady|InfoInhibitor|Watchdog
+        repeat_interval: 5m
+      - receiver: email-alerts
+        match_re:
+          severity: warning|major|critical
+        repeat_interval: 10m
+        continue: true
     receivers:
+    - name: default
+    - name: deadmansswitch
+    - name: email-alerts
       email_configs:
-        html: '{{ template "custom_pfe_email" . }}'
+        - to: ahmedfourat.touzri@esprit.tn
+          from: ahmedfourat.touzri@esprit.tn
+          smarthost: smtp.gmail.com:587
+          auth_username: ahmedfourat.touzri@esprit.tn
+          auth_password: XXXXX
+          headers:
+            subject: "[PFE][Dev][{{ .CommonLabels.severity | toUpper }}][{{ .Status | toUpper }}] - {{ .CommonLabels.alertname }}"
+          html: '{{ template "custom_pfe_email" . }}'
+          send_resolved: true
     templates:
-      - '/etc/alertmanager/config/*.tmpl'
-    # route:
-    #   receiver: default
-    #   group_by: ['job', 'alertname']
-    #   group_wait: 30s
-    #   group_interval: 5m
-    #   repeat_interval: 15m
-    #   routes:
-    #   - receiver: deadmansswitch
-    #     match_re:
-    #       alertname: DeadMansSwitch|KuredReplicasMismatch|KuredPodNotReady|InfoInhibitor|Watchdog
-    #     repeat_interval: 5m
-    #   - receiver: email-alerts
-    #     match_re:
-    #       severity: warning|major|critical
-    #     repeat_interval: 10m
-    #     continue: true
-    # receivers:
-    # - name: default
-    # - name: deadmansswitch
-    # - name: email-alerts
-    #   email_configs:
-    #     - to: ahmedfourat.touzri@esprit.tn
-    #       from: ahmedfourat.touzri@esprit.tn
-    #       smarthost: smtp.gmail.com:587
-    #       auth_username: PFE_SMTP_USERNAME
-    #       auth_password: PFE_SMTP_PASSWORD
-    #       headers:
-    #         subject: "[PFE][Dev][{{ .CommonLabels.severity | toUpper }}][{{ .Status | toUpper }}] - {{ .CommonLabels.alertname }}"
-    #       html: '{{ template "custom_pfe_email" . }}'
-    #       send_resolved: true
-    # templates:
-    # - '/etc/alertmanager/config/*.tmpl'
+    - '/etc/alertmanager/config/*.tmpl'
 
   ## Pass the Alertmanager configuration directives through Helm's templating
   ## engine. If the Alertmanager configuration contains Alertmanager templates,
