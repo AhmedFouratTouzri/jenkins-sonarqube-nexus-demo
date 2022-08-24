@@ -133,7 +133,7 @@ extraEnvFrom: []
 
 livenessProbe:
   httpGet:
-    path: /ready
+    path: /loki/ready
     port: http-metrics
   initialDelaySeconds: 45
 
@@ -185,7 +185,7 @@ rbac:
 
 readinessProbe:
   httpGet:
-    path: /ready
+    path: /loki/ready
     port: http-metrics
   initialDelaySeconds: 45
 
