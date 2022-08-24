@@ -93,7 +93,6 @@ config:
         period: 24h
   server:
     http_listen_port: 3100
-    http_path_prefix: /loki
     grpc_listen_port: 9095
   storage_config:
     boltdb_shipper:
@@ -133,7 +132,7 @@ extraEnvFrom: []
 
 livenessProbe:
   httpGet:
-    path: /loki/ready
+    path: /ready
     port: http-metrics
   initialDelaySeconds: 45
 
@@ -185,7 +184,7 @@ rbac:
 
 readinessProbe:
   httpGet:
-    path: /loki/ready
+    path: /ready
     port: http-metrics
   initialDelaySeconds: 45
 
