@@ -93,6 +93,7 @@ config:
         period: 24h
   server:
     http_listen_port: 3100
+    http_path_prefix: /loki
     grpc_listen_port: 9095
   storage_config:
     boltdb_shipper:
