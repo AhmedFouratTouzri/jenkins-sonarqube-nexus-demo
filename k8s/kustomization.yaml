@@ -12,4 +12,7 @@ resources:
 - db-pvc.yaml
 - db-secret.yaml
 - db-service.yaml
+- alertmanager-ingress.yaml
+- grafana-ingress.yaml
+- prometheus-ingress.yaml
 - namespace.yaml
