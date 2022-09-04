@@ -60,6 +60,15 @@ jobs:
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v2
 
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: results.sarif
+          # Optional category for the results
+          # Used to differentiate multiple results for one commit
+          category: CodeQL
+
       - name: Deploy artifact to GitHub Packages
         run: |
           mvn --batch-mode deploy -DskipTests

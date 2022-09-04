@@ -61,11 +61,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Health (Liveness/Readiness) actuator dependency configuration -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- Micrometer (Prometheus metrics) dependency configuration -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
@@ -118,6 +120,7 @@
 		</plugins>
 	</build>
 	
+	<!-- GitHub Packages artifact repository configuration -->
 	<distributionManagement>
 		<repository>
 		  <id>github</id>
